@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cropper js tutorial</title>
+
+    <!-- cropper js cdn links  -->
+    <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.5.13/dist/cropper.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropperjs@1.5.13/dist/cropper.min.css">
+    
+    <!-- tailwind css cdn link  -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <h1 class="text-center text-4xl text-gray-600 font-semibold py-2 border-0 border-b-2">Cropper js Easy Tutorial</h1>
+    <h5 class="text-center text-md text-gray-500 max-w-[800px] mx-auto mb-2">
+        Cropper js is a useful javascript library for image cropping. Sometime we need to 
+        crop image from sever or client or wherever. Cropper js is simple to use, you can read documentation 
+        <a href="https://github.com/fengyuanchen/cropperjs/blob/main/README.md" class="text-blue-600 hover:text-blue-700">cropper js docs</a>
+        
+    </h5>
+    <h2 class="text-2xl text-gray-600 font-semibold border-0 border-b-2 py-2 ps-2">Simple Cropping</h2>
+    
+    <!-- Action btns  -->
+    <div class="flex my-2 ps-2">
+        <button 
+        onclick="rotateClockWise()" 
+        class="px-2 py-2 me-2 bg-blue-600 rounded-md text-white">Rotate 90</button>
+        <button 
+        onclick="reset()" 
+        class="px-2 py-2 me-2 bg-gray-600 rounded-md text-white">Reset</button>
+        <button 
+        onclick="clearCropper()" 
+        class="px-2 py-2 me-2 bg-red-600 rounded-md text-white">Clear</button>
+        <button 
+        onclick="crop()" 
+        class="px-2 py-2 me-2 bg-green-600 rounded-md text-white">Crop</button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2">
+        <div class="mx-auto">
+            <h2 class="text-lg text-gray-600 font-semibold mb-2">Cropping Image</h2>
+            <!-- important!  -->
+            <!-- Need to wrap a container div to image that you want to crop  -->
+            <div class="image-wrapper w-[400px]">
+                <img src="image-1.jpg" alt="..." id="image" class="w-100 block">  <!-- Fee free to try with various image size  -->
+            </div>
+        </div>
+
+        <div class="mx-auto">
+            <h2 class="text-lg text-gray-600 font-semibold mb-2">Preview Cropped Image</h2>
+            <div id="preview" class="w-[400px] h-[400px] overflow-hidden mb-4">
+                <!-- Preview Image  -->
+                <!-- if preview image not show, give {width and height and overflow to hidden} to preview tag -->
+            </div>  
+
+            <!-- download cropped image  -->
+            <a 
+            href="" 
+            id="download" 
+            class="px-3 py-2 border-2 border-blue-600 rounded-md hover:bg-blue-600 hover:text-white active:bg-blue-500 transition duration-150"
+            download>Download Cropped Image</a>
+        </div>
+    </div>
+
+    <p class="text-md font-semibold text-center mt-3 mb-1">Learn in source code of this demo with reliable comments.</p>
+</body>
+
+
+<script>
+const image = document.getElementById('image');
+const previewTag = document.getElementById('preview');
+const download = document.getElementById('download');
+
+const cropper = new Cropper(image, {
+//   Options 
+  aspectRatio: 1 / 1,  // crop ratio like { 1/1, 3/4, 4/3, 16/9, 9/16 }
+  preview: previewTag,  // for cropped image preview 
+  modal: true,  // croping line modal (default = true)
+  autoCropArea: 1,  // auto crop modal size, can change (..., 0.5,0.6,..., 1)
+  zoomable: false,  // zooming image (default = true)
+
+
+  crop(event) {
+    console.log(event.detail.x); // can remove
+    console.log(event.detail.y); // can remove
+    console.log(event.detail.width); // can remove
+    console.log(event.detail.height); // can remove
+    console.log(event.detail.rotate); // can remove
+    console.log(event.detail.scaleX); // can remove
+    console.log(event.detail.scaleY); // can remove
+
+    // cropped image data 
+    const croppedImg = cropper.getCroppedCanvas();
+    const dataUrl = croppedImg.toDataURL();
+    // download 
+    download.href = dataUrl;
+  },
+});
+
+// functions 
+function rotateClockWise() {
+    cropper.rotate(90)  // if you want to rotate anticlockwise give negative value (-90)
+}
+function reset() {
+    cropper.reset(); // reset cropping to initial
+}
+function clearCropper() {
+    cropper.clear(); // clear cropping
+}
+function crop() {
+    cropper.crop(); // clear cropping
+}
+</script>
+
+</html>
